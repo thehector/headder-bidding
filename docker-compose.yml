@@ -1,0 +1,28 @@
+version: '3'  # version of compose format
+
+services:
+  bidders:
+    build: .  # path is relative to docker-compose.yml localtion
+    volumes:
+      - .:/usr/src/bidders # mount point
+    ports:
+      - 5000:5000  # host:container
+    networks:
+      - network
+
+  auctions:
+    container_name: auctions
+    build: auctions/.
+    command: go run main.go
+    volumes:
+      - ./auctions:/go/src/header-bidding
+    working_dir: /go/src/header-bidding
+    ports:
+      - "8000:8000"
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
+
